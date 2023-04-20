@@ -13,8 +13,8 @@ services:
 
   reverseproxy:
     build:
-      context: .
-      dockerfile: udagram-reverseproxy/Dockerfile
+      context: ./udagram-reverseproxy
+      dockerfile: Dockerfile
     networks:
       - udagram
     ports:
