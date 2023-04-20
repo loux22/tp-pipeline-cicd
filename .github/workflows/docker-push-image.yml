@@ -27,9 +27,10 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Set Docker image tag
-        run: echo ::set-env name=DOCKER_IMAGE_TAG::${{ env.APP_VERSION }}
-        # Cette étape définit la variable d'environnement DOCKER_IMAGE_TAG à partir de la variable APP_VERSION.
+      - name: Load environment variables
+        uses: dorny/envfile@v1
+        with:
+          filename: .env
 
       - name: Build and push udagram-api-feed
         uses: docker/build-push-action@v2
