@@ -5,12 +5,13 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+    
+env:
+  DOCKER_VERSION_TAG: 1.0.2
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-    env:
-      APP_VERSION: 1.0.0 # spécifie le tag de l'image Docker
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -32,26 +33,26 @@ jobs:
         with:
           context: ./udagram-api-feed/
           push: true
-          tags: lardilly/udagram-api-feed:${{ secrets.DOCKER_IMAGE_TAG }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/udagram-api-feed:${{ env.DOCKER_VERSION_TAG }}
       
       - name: Build and push udagram-api-user
         uses: docker/build-push-action@v2
         with:
           context: ./udagram-api-user/
           push: true
-          tags: lardilly/udagram-api-user:${{ secrets.DOCKER_IMAGE_TAG }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/udagram-api-user:${{ env.DOCKER_VERSION_TAG }}
           
       - name: Build and push udagram-frontend
         uses: docker/build-push-action@v2
         with:
           context: ./udagram-frontend/
           push: true
-          tags: lardilly/udagram-frontend:${{ secrets.DOCKER_IMAGE_TAG }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/udagram-frontend:${{ env.DOCKER_VERSION_TAG }}
       
       - name: Build and push udagram-reverseproxy
         uses: docker/build-push-action@v2
         with:
           context: ./udagram-reverseproxy/
           push: true
-          tags: lardilly/udagram-reverseproxy:${{ secrets.DOCKER_IMAGE_TAG }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/udagram-reverseproxy:${{ env.DOCKER_VERSION_TAG }}
 
