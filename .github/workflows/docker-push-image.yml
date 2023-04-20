@@ -1,0 +1,61 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    env:
+      APP_VERSION: 1.0.0 # spécifie le tag de l'image Docker
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Set Docker image tag
+        run: echo ::set-env name=DOCKER_IMAGE_TAG::${{ env.APP_VERSION }}
+        # Cette étape définit la variable d'environnement DOCKER_IMAGE_TAG à partir de la variable APP_VERSION.
+
+      - name: Build and push udagram-api-feed
+        uses: docker/build-push-action@v2
+        with:
+          context: ./udagram-api-feed/
+          push: true
+          tags: lardilly/udagram-api-feed:${{ env.DOCKER_IMAGE_TAG }}
+      
+      - name: Build and push udagram-api-user
+        uses: docker/build-push-action@v2
+        with:
+          context: ./udagram-api-user/
+          push: true
+          tags: lardilly/udagram-api-user:${{ env.DOCKER_IMAGE_TAG }}
+          
+      - name: Build and push udagram-frontend
+        uses: docker/build-push-action@v2
+        with:
+          context: ./udagram-frontend/
+          push: true
+          tags: lardilly/udagram-frontend:${{ env.DOCKER_IMAGE_TAG }}
+      
+      - name: Build and push udagram-reverseproxy
+        uses: docker/build-push-action@v2
+        with:
+          context: ./udagram-reverseproxy/
+          push: true
+          tags: lardilly/udagram-reverseproxy:${{ env.DOCKER_IMAGE_TAG }}
+
