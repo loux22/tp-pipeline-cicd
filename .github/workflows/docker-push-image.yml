@@ -32,26 +32,26 @@ jobs:
         with:
           context: ./udagram-api-feed/
           push: true
-          tags: lardilly/udagram-api-feed:${{ secrets.DOCKER_IMAGE_TAG }}
+          tags: lardilly/udagram-api-feed:${{ env.VERSION_TAG }}
       
       - name: Build and push udagram-api-user
         uses: docker/build-push-action@v2
         with:
           context: ./udagram-api-user/
           push: true
-          tags: lardilly/udagram-api-user:${{ secrets.DOCKER_IMAGE_TAG }}
+          tags: lardilly/udagram-api-user:${{ env.VERSION_TAG }}
           
       - name: Build and push udagram-frontend
         uses: docker/build-push-action@v2
         with:
           context: ./udagram-frontend/
           push: true
-          tags: lardilly/udagram-frontend:${{ secrets.DOCKER_IMAGE_TAG }}
+          tags: lardilly/udagram-frontend:${{ env.VERSION_TAG }}
       
       - name: Build and push udagram-reverseproxy
         uses: docker/build-push-action@v2
         with:
           context: ./udagram-reverseproxy/
           push: true
-          tags: lardilly/udagram-reverseproxy:${{ secrets.DOCKER_IMAGE_TAG }}
+          tags: lardilly/udagram-reverseproxy:${{ env.VERSION_TAG }}
 
