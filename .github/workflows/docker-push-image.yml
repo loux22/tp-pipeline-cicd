@@ -28,9 +28,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Load environment variables
-        uses: dorny/envfile@v1
-        with:
-          filename: .env
+        run: source .env || true
 
       - name: Build and push udagram-api-feed
         uses: docker/build-push-action@v2
