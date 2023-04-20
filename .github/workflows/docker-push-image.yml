@@ -28,7 +28,9 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Load environment variables
-        run: source .env || true
+        uses: swisskyrepo/env-file@v1
+        with:
+          path: .env
 
       - name: Build and push udagram-api-feed
         uses: docker/build-push-action@v2
