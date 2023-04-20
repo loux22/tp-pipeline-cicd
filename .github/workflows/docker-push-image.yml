@@ -27,36 +27,31 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Load environment variables
-        uses: swisskyrepo/env-file@v1
-        with:
-          path: .env
-
       - name: Build and push udagram-api-feed
         uses: docker/build-push-action@v2
         with:
           context: ./udagram-api-feed/
           push: true
-          tags: lardilly/udagram-api-feed:${{ env.DOCKER_IMAGE_TAG }}
+          tags: lardilly/udagram-api-feed:${{ secrets.DOCKER_IMAGE_TAG }}
       
       - name: Build and push udagram-api-user
         uses: docker/build-push-action@v2
         with:
           context: ./udagram-api-user/
           push: true
-          tags: lardilly/udagram-api-user:${{ env.DOCKER_IMAGE_TAG }}
+          tags: lardilly/udagram-api-user:${{ secrets.DOCKER_IMAGE_TAG }}
           
       - name: Build and push udagram-frontend
         uses: docker/build-push-action@v2
         with:
           context: ./udagram-frontend/
           push: true
-          tags: lardilly/udagram-frontend:${{ env.DOCKER_IMAGE_TAG }}
+          tags: lardilly/udagram-frontend:${{ secrets.DOCKER_IMAGE_TAG }}
       
       - name: Build and push udagram-reverseproxy
         uses: docker/build-push-action@v2
         with:
           context: ./udagram-reverseproxy/
           push: true
-          tags: lardilly/udagram-reverseproxy:${{ env.DOCKER_IMAGE_TAG }}
+          tags: lardilly/udagram-reverseproxy:${{ secrets.DOCKER_IMAGE_TAG }}
 
