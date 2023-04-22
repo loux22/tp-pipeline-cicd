@@ -1,0 +1,35 @@
+image: docker
+
+services:
+  - docker:dind
+
+variables:
+  DOCKER_TLS_CERTDIR: ""
+
+before_script:
+  - docker info
+
+stages:         
+  - build
+  # - deploy
+
+build-job:      
+  stage: build
+  tags:
+    - docker
+  before_script:
+    - echo "Login dockerhub"
+    - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_TOKEN
+  script:
+    - echo "Build image"
+    - docker build -t $DOCKERHUB_USERNAME/udagram-api-feed:$DOCKER_VERSION_TAG ./udagram-api-feed/
+    - docker build -t $DOCKERHUB_USERNAME/udagram-api-user:$DOCKER_VERSION_TAG ./udagram-api-user/
+    - docker build -t $DOCKERHUB_USERNAME/udagram-frontend:$DOCKER_VERSION_TAG ./udagram-frontend/
+    - docker build -t $DOCKERHUB_USERNAME/udagram-reverseproxy:$DOCKER_VERSION_TAG ./udagram-reverseproxy/
+    - echo "Deploy image"
+    - docker push $DOCKERHUB_USERNAME/udagram-api-feed:$DOCKER_VERSION_TAG
+    - docker push $DOCKERHUB_USERNAME/udagram-api-user:$DOCKER_VERSION_TAG
+    - docker push $DOCKERHUB_USERNAME/udagram-frontend:$DOCKER_VERSION_TAG
+    - docker push $DOCKERHUB_USERNAME/udagram-reverseproxy:$DOCKER_VERSION_TAG
+  only:
+    - main
